@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Backtest UI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 24px
+        }
+
+        label {
+            display: block;
+            margin-top: 8px
+        }
+
+        input,
+        select {
+            padding: 6px;
+            margin-top: 4px
+        }
+
+        .strategy {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 8px 0
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Backtest UI</h1>
+    <form id="btForm">
+        <label>Symbol <input id="symbol" value="RELIANCE.NS" /></label>
+        <label>Start <input id="start" type="date" value="2020-01-01" /></label>
+        <label>End <input id="end" type="date" value="2025-10-13" /></label>
+
+        <h3>Choose strategies</h3>
+        <div id="strategies"></div>
+
+        <button type="submit">Run Backtests</button>
+    </form>
+
+    <h2>Results</h2>
+    <pre id="results"></pre>
+
+        <script type="application/json" id="strategies-data">
+    {{ strategies | tojson | safe }}
+        </script>
+        <script>
+            // Load available strategies from server-rendered JSON without breaking on missing data
+            (function () {
+                const dataElement = document.getElementById('strategies-data');
+                let strategies = [];
+                if (dataElement) {
+                    const text = (dataElement.textContent || '').trim();
+                    if (text) {
+                        try {
+                            strategies = JSON.parse(text);
+                        } catch (error) {
+                            console.error('Failed to parse strategies JSON:', error);
+                        }
+                    }
+                }
+                window.available = strategies;
+            })();
+        </script>
+        <script src="/static/main.js"></script>
+</body>
+
+</html>
