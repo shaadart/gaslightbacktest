@@ -218,8 +218,9 @@ def normalize_yf_data(data: pd.DataFrame) -> pd.DataFrame:
 
 
 if __name__ == '__main__':
-    print("Fetching historical stock data for Reliance Industries...")
-    data = yf.download('RELIANCE.NS', start='2020-01-01', end=None)
+    symbol = 'RELIANCE.NS'
+    print(f"Fetching historical stock data for {symbol}...")
+    data = yf.download(symbol, start='2020-01-01', end=None)
     data = normalize_yf_data(data)
 
     if data.empty:
